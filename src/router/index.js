@@ -23,8 +23,7 @@ const routes = [
     }
   },
   {
-    path: '/:pathMatch(.*)*',
-    name: 'not-found',
+    path: '/:pathMatch(.*)',
     component: () => import('@/views/NofFoundView.vue')
   },
   {
