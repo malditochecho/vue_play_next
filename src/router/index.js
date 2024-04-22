@@ -2,34 +2,46 @@ import { createRouter, createWebHistory } from 'vue-router'
 import useAuthUser from '@/composables/useAuthUser'
 
 const routes = [
+  // pages routes
   {
+    name: 'Home',
     path: '/',
-    name: 'home',
-    component: () => import('@/views/HomeView.vue'),
-    meta: { requiresAuth: true }
+    redirect: '/games'
   },
   {
+    name: 'Games',
+    path: '/games',
+    meta: {
+      requiresAuth: true
+    },
+    component: () => import('@/views/GameList.vue')
+  },
+
+  // auth routes
+  {
+    name: 'Login',
     path: '/login',
-    name: 'login',
-    component: () => import('@/views/LoginView.vue')
+    component: () => import('@/views/Login.vue')
   },
   {
+    name: 'Logout',
     path: '/logout',
-    name: 'logout',
     beforeEnter: async () => {
       const { logout } = useAuthUser()
       await logout()
-      return { name: 'login' }
+      return { name: 'Login' }
     }
   },
+
+  // other routes
   {
     path: '/:pathMatch(.*)',
-    component: () => import('@/views/NofFoundView.vue')
+    component: () => import('@/views/NofFound.vue')
   },
   {
     path: '/error/:error',
     name: 'error',
-    component: () => import('@/views/ErrorView.vue')
+    component: () => import('@/views/Error.vue')
   }
 ]
 
@@ -39,11 +51,10 @@ const router = createRouter({
 })
 
 // cada vez que se ingresa a una ruta...
-router.beforeEach(async (to) => {
+router.beforeEach((to, from, next) => {
   const { isLoggedIn } = useAuthUser()
-  if (!isLoggedIn && to.meta.requiresAuth) {
-    return { name: 'login' }
-  }
+  if (!isLoggedIn() && to.meta.requiresAuth) next({ name: 'Login' })
+  else next()
 })
 
 export default router

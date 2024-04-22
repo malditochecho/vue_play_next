@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted } from 'vue'
-import useSupabaseTodos from '@/composables/useSupabaseTodos'
+import useSupabasePlaynext from '@/composables/useSupabasePlaynext'
 
 // add a new game
 import { ref } from 'vue'
@@ -23,7 +23,8 @@ const handleDelete = () => {
 }
 
 // fetch games from the database
-const { data, error, loading, fetchRecords, addRecord, deleteRecords } = useSupabaseTodos('games')
+const { data, error, loading, fetchRecords, addRecord, deleteRecords } =
+  useSupabasePlaynext('games')
 onMounted(() => fetchRecords())
 
 // list of games: sort

@@ -1,8 +1,9 @@
 import { ref } from 'vue'
 import useSupabase from '@/composables/useSupabase'
 
-export default function useSupabaseTodos(tableName) {
+export default function useSupabasePlaynext(tableName) {
   const { supabase } = useSupabase()
+
   const data = ref([])
   const error = ref(null)
   const loading = ref(false)
